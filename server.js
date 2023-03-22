@@ -59,3 +59,29 @@ function menu() {
         })
 }
 
+function viewEmployees() {
+    db.query('SELECT * FROM employee', (err, result) => {
+        if (err) console.log(err);
+
+        console.table(result);
+        menu();
+    })
+}
+
+function viewRoles() {
+    db.query('SELECT * FROM role', (err, result) => {
+        if (err) console.log(err);
+
+        console.table(result)
+        menu();
+    })
+}
+
+function viewDepartments() {
+    db.query('SELECT * FROM department', (err, result) => {
+        if (err) console.log(err);
+
+        console.table(result)
+        menu();
+    })
+}
