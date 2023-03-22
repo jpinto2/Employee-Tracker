@@ -61,7 +61,10 @@ function menu() {
 
 function viewEmployees() {
     db.query('SELECT * FROM employee', (err, result) => {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err);
+            return;
+        }
 
         console.table(result);
         menu();
@@ -70,7 +73,10 @@ function viewEmployees() {
 
 function viewRoles() {
     db.query('SELECT * FROM role', (err, result) => {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err);
+            return;
+        }
 
         console.table(result)
         menu();
@@ -79,9 +85,37 @@ function viewRoles() {
 
 function viewDepartments() {
     db.query('SELECT * FROM department', (err, result) => {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err);
+            return;
+        }
 
         console.table(result)
         menu();
     })
+}
+
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'What is the name of the new department?',
+            },
+        ])
+        .then((response) => {
+            const sql = `INSERT INTO departments (department_name) VALUES (?)`;
+            const params = [response.name];
+
+            db.query(sql, params, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+
+                console.log(`Added ${res.departmentName} to the database`);
+                menu();
+            })
+        })
 }
