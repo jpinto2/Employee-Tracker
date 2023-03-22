@@ -22,15 +22,15 @@ function menu() {
     inquirer
     prompt([
         {
-            name: 'prompt',
             type: 'list',
+            name: 'choice',
             message: 'EMPLOYEE MANAGER\n What would you like to do?',
             choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments',
                 'Add Department','Quit'],
         },
     ])
         .then(function (response) {
-            switch (response.prompt) {
+            switch (response.choice) {
                 case 'View All Employees':
                     viewEmployees();
                     break;
@@ -105,6 +105,7 @@ function addDepartment() {
             },
         ])
         .then((response) => {
+
             const sql = `INSERT INTO departments (department_name) VALUES (?)`;
             const params = [response.name];
 
@@ -118,4 +119,44 @@ function addDepartment() {
                 menu();
             })
         })
+}
+
+function addRole() {
+    db.query('SELECT * FROM department', (err, dep) => {
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'title',
+                    message: 'What is the name of the new role? ',
+                },
+                {
+                    type: 'input',
+                    name: 'salary',
+                    message: 'What is the salary of the role? ',
+                },
+                {
+                    type: 'list',
+                    name: 'department',
+                    message: 'Which department does the role belong to? ',
+                    choices: dep.map((department) => department.name),
+                },
+            ])
+            .then((response) => {
+
+                const departmentName = dep.find((department) => department.name === data.department);
+                const sql = `INSERT INTO roles (department_id, title, salary) VALUES (?, ?, ?)`;
+                const params = [departmentName.id, response.title, ressponse.salary];
+
+                db.query(sql, params, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+
+                    console.log(`Added ${res.roleTitle} to the database`);
+                    menu();
+                })
+            })
+    })
 }
