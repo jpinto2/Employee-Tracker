@@ -115,7 +115,7 @@ function addDepartment() {
                     return;
                 }
 
-                console.log(`Added ${res.departmentName} to the database`);
+                console.log(`Added ${params} to the database`);
                 menu();
             })
         })
@@ -144,9 +144,9 @@ function addRole() {
             ])
             .then((response) => {
 
-                const departmentName = dep.find((department) => department.name === data.department);
-                const sql = `INSERT INTO roles (department_id, title, salary) VALUES (?, ?, ?)`;
-                const params = [departmentName.id, response.title, ressponse.salary];
+                const departmentName = dep.find((department) => department.name === reponse.department);
+                const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
+                const params = [response.title, response.salary, departmentName.id];
 
                 db.query(sql, params, (err, result) => {
                     if (err) {
@@ -154,7 +154,54 @@ function addRole() {
                         return;
                     }
 
-                    console.log(`Added ${res.roleTitle} to the database`);
+                    console.log(`Added ${response.title} to the database`);
+                    menu();
+                })
+            })
+    })
+}
+
+function addEmployee() {
+    db.query('SELECT * FROM role', (err, rol) => {
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    name: 'first',
+                    message: 'What is the first name of the employee? ',
+                },
+                {
+                    type: 'input',
+                    name: 'last',
+                    message: 'What is the last name of the employee? ',
+                },
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: 'What is the employees role? ',
+                    choices: rol.map((role) => role.name),
+                },
+                // getting short on time so skipped this part since i was having trouble with it
+                //{
+                //    type: 'list',
+                //    name: 'manager',
+                //    message: 'Who is their manager? ',
+                //   choices: emp.map((manager) => manager.name),
+                // },
+            ])
+            .then((response) => {
+
+                const roleName = rol.find((role) => role.name === response.role);
+                const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+                const params = [response.first, response.last, roleName.id, 1];
+
+                db.query(sql, params, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+
+                    console.log(`Added ${response.first} ${response.last} to the database`);
                     menu();
                 })
             })
