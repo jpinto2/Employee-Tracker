@@ -1,9 +1,11 @@
 // Import and require mysql2
+
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
 
 const PORT = process.env.PORT || 3001;
+
 
 // Connect to database
 const db = mysql.createConnection(
@@ -11,24 +13,26 @@ const db = mysql.createConnection(
         host: 'localhost',
         // MySQL username,
         user: 'root',
-        // TODO: Add MySQL password here
+        
         password: 'Meatbutter30!',
         database: 'employees_db'
     },
     console.log(`Connected to the employees_db database.`)
 );
 
+
+
 function menu() {
     inquirer
-    prompt([
-        {
-            type: 'list',
-            name: 'choice',
-            message: 'EMPLOYEE MANAGER\n What would you like to do?',
-            choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments',
-                'Add Department','Quit'],
-        },
-    ])
+        .prompt([
+            {
+                type: 'list',
+                name: 'choice',
+                message: 'EMPLOYEE MANAGER\n What would you like to do?',
+                choices: ['View All Employees', 'Add Employee', 'View All Roles', 'Add Role', 'View All Departments',
+                    'Add Department', 'Quit'],
+            },
+        ])
         .then(function (response) {
             switch (response.choice) {
                 case 'View All Employees':
@@ -37,9 +41,10 @@ function menu() {
                 case 'Add Employee':
                     addEmployee();
                     break;
-                case 'Update Employee Role':
-                    updateRole();
-                    break;
+                // short on time so skipping this one 
+                //case 'Update Employee Role':
+                //    updateRole();
+                //    break;
                 case 'View All Roles':
                     viewRoles();
                     break;
@@ -193,6 +198,7 @@ function addEmployee() {
 
                 const roleName = rol.find((role) => role.name === response.role);
                 const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+                // using 1 as default manager id value since i ran out of time to figure that part of the function out
                 const params = [response.first, response.last, roleName.id, 1];
 
                 db.query(sql, params, (err, result) => {
@@ -207,3 +213,10 @@ function addEmployee() {
             })
     })
 }
+
+
+
+menu();
+
+// short on time so skipping this function
+// function updateRole
