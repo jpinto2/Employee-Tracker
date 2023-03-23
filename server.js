@@ -111,7 +111,7 @@ function addDepartment() {
         ])
         .then((response) => {
 
-            const sql = `INSERT INTO departments (department_name) VALUES (?)`;
+            const sql = `INSERT INTO department (name) VALUES (?)`;
             const params = [response.name];
 
             db.query(sql, params, (err, result) => {
@@ -149,8 +149,8 @@ function addRole() {
             ])
             .then((response) => {
 
-                const departmentName = dep.find((department) => department.name === reponse.department);
-                const sql = `INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
+                const departmentName = dep.find((department) => department.name === response.department);
+                const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
                 const params = [response.title, response.salary, departmentName.id];
 
                 db.query(sql, params, (err, result) => {
@@ -184,7 +184,7 @@ function addEmployee() {
                     type: 'list',
                     name: 'role',
                     message: 'What is the employees role? ',
-                    choices: rol.map((role) => role.name),
+                    choices: rol.map((role) => role.title),
                 },
                 // getting short on time so skipped this part since i was having trouble with it
                 //{
@@ -196,8 +196,8 @@ function addEmployee() {
             ])
             .then((response) => {
 
-                const roleName = rol.find((role) => role.name === response.role);
-                const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+                const roleName = rol.find((role) => role.title === response.role);
+                const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
                 // using 1 as default manager id value since i ran out of time to figure that part of the function out
                 const params = [response.first, response.last, roleName.id, 1];
 
