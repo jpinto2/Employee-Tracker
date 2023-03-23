@@ -1,8 +1,8 @@
-# Professional README Generator
+# Employee Tracker
   
 ## Description
   
-To automatically generate a custom readme file with user input
+A mysql program to allow managers to track their employees and info
   
 ## Installation
   
@@ -26,5 +26,5 @@ Feel free to fork it for their own use
   
 ## Video Link
 
-[videolink]().
+[videolink](https://drive.google.com/file/d/1c-Vi82u6SODMLbZJCsPYJY6mVDL0XeJZ/view).
   
